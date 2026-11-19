@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 
 import JsonLd from "@/components/JsonLd";
 import { getLesson, lessonUrl, publishedIn } from "@/content/lessons";
-import { getPath, paths } from "@/content/paths";
-import { breadcrumbLd, courseLd } from "@/lib/seo";
+import { getPath, pathName, paths } from "@/content/paths";
+import { breadcrumbLd, courseLd, itemListLd } from "@/lib/seo";
+import { pathIcons } from "@/components/pathIcons";
 
 type Params = Promise<{ path: string }>;
 
@@ -18,7 +19,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const path = getPath((await params).path);
   if (!path) return {};
-  const title = `Python ${path.title} course — free lessons`;
+  const title = `${pathName(path)} course — free lessons`;
   return {
     title,
     description: `${path.summary} Free, with runnable code, exercises and quizzes.`,
@@ -35,20 +36,29 @@ export default async function PathPage({ params }: { params: Params }) {
     <>
       <JsonLd data={courseLd(path, lessons)} />
       <JsonLd
+        data={itemListLd(
+          `${pathName(path)} lessons`,
+          lessons.map((l) => ({ name: l.title, path: lessonUrl(l) })),
+        )}
+      />
+      <JsonLd
         data={breadcrumbLd([
           { name: "Learn", path: "/learn/" },
           { name: path.title, path: `/learn/${path.id}/` },
         ])}
       />
-      <section className="page-head">
+      <section className={`page-head path-head path-${path.id}`}>
         <div className="wrap">
           <div className="crumbs">
             <Link href="/learn/">Learn</Link> / <span>{path.title}</span>
           </div>
-          <h1>Python {path.title}</h1>
+          <h1>
+            <span className="card-icon">{pathIcons[path.id]}</span> {pathName(path)}
+          </h1>
           <p>{path.summary}</p>
           <p className="muted" style={{ fontSize: 15, marginTop: 12 }}>
-            {path.outline.length} lessons · {lessons.length} published · new lessons added regularly
+            {lessons.length} free lessons · about {Math.round(lessons.reduce((n, l) => n + l.minutes, 0) / 6) / 10} hours ·
+            runnable code, exercises and quizzes
           </p>
         </div>
       </section>

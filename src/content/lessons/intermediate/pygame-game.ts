@@ -36,7 +36,7 @@ def new_block() -> Box:
 def main() -> None:
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Dodge — a Pythonmates project")
+    pygame.display.set_caption("Dodge — a PythonMates project")
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
 

@@ -23,8 +23,19 @@ export const metadata: Metadata = {
     "Python for AI",
     "Python exercises",
     "run Python online",
+    "PythonMates",
+    "learn Python with AI",
+    "Python course free",
   ],
   alternates: { canonical: "/" },
+  category: "education",
+  creator: site.author.name,
+  publisher: site.name,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -32,7 +43,7 @@ export const metadata: Metadata = {
     title,
     description: site.description,
   },
-  twitter: { card: "summary", title, description: site.description },
+  twitter: { card: "summary_large_image", title, description: site.description },
 };
 
 export const viewport: Viewport = {

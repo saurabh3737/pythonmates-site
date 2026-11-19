@@ -1,4 +1,4 @@
-/** Pythonmates mark: an original "prompt" tile — blue square, yellow >_ . */
+/** PythonMates mark: an original "prompt" tile — blue square, yellow >_ . */
 export function BrandMark({ className = "brand-mark" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 32 32" aria-hidden="true">

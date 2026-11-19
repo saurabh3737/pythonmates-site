@@ -1,11 +1,11 @@
-import { Bot, CheckCircle2, Clock, Sparkles } from "lucide-react";
+import { Bot, CheckCircle2, Clock, ListOrdered, Sparkles, UserRound } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import ExerciseBox from "@/components/ExerciseBox";
 import JsonLd from "@/components/JsonLd";
-import LessonBody from "@/components/LessonBody";
+import LessonBody, { slugify } from "@/components/LessonBody";
 import LessonSidebar from "@/components/LessonSidebar";
 import Quiz from "@/components/Quiz";
 import RichText from "@/components/RichText";
@@ -28,11 +28,25 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!lesson) return {};
   const url = lessonUrl(lesson);
   const title = `${lesson.title} — Python tutorial`;
+  const pathInfo = getPath(lesson.path);
   return {
     title,
     description: lesson.description,
+    keywords: [lesson.title, `Python ${lesson.title.toLowerCase()}`, `${pathInfo?.title ?? ""} Python`, "Python tutorial"],
+    authors: [{ name: site.author.name, url: site.author.url }],
     alternates: { canonical: url },
-    openGraph: { type: "article", url, title, description: lesson.description, modifiedTime: lesson.updated },
+    openGraph: {
+      type: "article",
+      url,
+      title,
+      description: lesson.description,
+      publishedTime: lesson.updated,
+      modifiedTime: lesson.updated,
+      authors: [site.author.url],
+      section: pathInfo?.title,
+      tags: ["Python", pathInfo?.title ?? "", lesson.title],
+    },
+    twitter: { card: "summary_large_image", title, description: lesson.description },
   };
 }
 
@@ -43,6 +57,7 @@ export default async function LessonPage({ params }: { params: Params }) {
   if (!lesson || !path) notFound();
 
   const { prev, next } = neighbours(lesson);
+  const sections = lesson.blocks.filter((b) => b.t === "h2").map((b) => (b as { text: string }).text);
   const index = path.outline.findIndex((o) => o.slug === lesson.slug) + 1;
 
   return (
@@ -71,7 +86,15 @@ export default async function LessonPage({ params }: { params: Params }) {
           <span>
             <CheckCircle2 size={15} /> Tested on Python {site.pythonVersion}
           </span>
-          <span>Updated {lesson.updated}</span>
+          <span>
+            Updated <time dateTime={lesson.updated}>{lesson.updated}</time>
+          </span>
+          <span>
+            <UserRound size={15} /> By{" "}
+            <Link href="/about/" rel="author">
+              {site.author.name}
+            </Link>
+          </span>
         </div>
 
         <div className="answer">
@@ -80,6 +103,27 @@ export default async function LessonPage({ params }: { params: Params }) {
             <RichText text={lesson.answer} />
           </p>
         </div>
+
+        <nav className="toc" aria-label="In this lesson">
+          <strong>
+            <ListOrdered size={16} /> In this lesson
+          </strong>
+          <ol>
+            {sections.map((h) => (
+              <li key={h}>
+                <a href={`#${slugify(h)}`}>
+                  <RichText text={h} />
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href="#exercise">Practice exercise</a>
+            </li>
+            <li>
+              <a href="#quiz">Quick check</a>
+            </li>
+          </ol>
+        </nav>
 
         <LessonBody blocks={lesson.blocks} />
 
@@ -95,13 +139,13 @@ export default async function LessonPage({ params }: { params: Params }) {
         <ExerciseBox exercise={lesson.exercise} />
         <Quiz questions={lesson.quiz} />
 
-        {/* Slot for the Pythonmate AI tutor (phase 2). */}
+        {/* Slot for the PythonMate AI tutor (phase 2). */}
         <div className="ai-slot">
           <div className="card">
             <span className="card-icon">
               <Bot size={22} />
             </span>
-            <h3>Pythonmate — your AI tutor</h3>
+            <h3>PythonMate — your AI tutor</h3>
             <p>Coming soon: ask questions about this lesson, get your code explained and receive extra exercises.</p>
             <span className="badge-soon" style={{ alignSelf: "flex-start" }}>
               In development

@@ -1,5 +1,5 @@
 // Lesson content is plain data — no markdown parser, fully typed, easy to search,
-// and easy for the future "Pythonmate" AI tutor to read.
+// and easy for the future "PythonMate" AI tutor to read.
 // Inline `code` in any text is written with backticks.
 
 export type Block =

@@ -8,10 +8,10 @@ export default function SiteHeader() {
   return (
     <header className="site-header">
       <div className="wrap">
-        <Link href="/" className="brand" aria-label="Pythonmates home">
+        <Link href="/" className="brand" aria-label="PythonMates home">
           <BrandMark />
           <span>
-            Python<b>mates</b>
+            Python<b>Mates</b>
           </span>
         </Link>
         <nav className="site-nav" aria-label="Main">

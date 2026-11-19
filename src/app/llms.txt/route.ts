@@ -27,6 +27,7 @@ export function GET() {
   lines.push(
     "## Optional",
     "",
+    `- [Full course text](${site.url}/llms-full.txt): every lesson in one plain-text file`,
     `- [Practice exercises](${site.url}/practice/): all exercises with automatic checking`,
     `- [About](${site.url}/about/)`,
     `- [AIMates](https://aimates.org/): sister site on using AI at work`,

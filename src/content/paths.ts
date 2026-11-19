@@ -81,3 +81,8 @@ export const paths: PathInfo[] = [
 export function getPath(id: string) {
   return paths.find((p) => p.id === id);
 }
+
+/** "Python Beginner", "Python Advanced", but "Python for AI" (no doubled word). */
+export function pathName(p: { title: string }): string {
+  return p.title.startsWith("Python") ? p.title : `Python ${p.title}`;
+}

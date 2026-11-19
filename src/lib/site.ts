@@ -1,5 +1,5 @@
 export const site = {
-  name: "Pythonmates",
+  name: "PythonMates",
   url: "https://pythonmates.com",
   tagline: "Learn Python the modern way",
   description:

@@ -41,8 +41,8 @@ const lesson: Lesson = {
     {
       t: "code",
       run: true,
-      code: 'class Employee:\n    company = "Pythonmates"     # shared by all instances\n    headcount = 0\n\n    def __init__(self, name: str) -> None:\n        self.name = name          # one per instance\n        Employee.headcount += 1\n\na = Employee("Ana")\nb = Employee("Ben")\nprint(a.company, b.company)\nprint(Employee.headcount)',
-      output: "Pythonmates Pythonmates\n2",
+      code: 'class Employee:\n    company = "PythonMates"     # shared by all instances\n    headcount = 0\n\n    def __init__(self, name: str) -> None:\n        self.name = name          # one per instance\n        Employee.headcount += 1\n\na = Employee("Ana")\nb = Employee("Ben")\nprint(a.company, b.company)\nprint(Employee.headcount)',
+      output: "PythonMates PythonMates\n2",
     },
     { t: "h2", text: "Inheritance" },
     {

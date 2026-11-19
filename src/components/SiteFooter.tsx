@@ -13,7 +13,7 @@ export default function SiteFooter() {
             <Link href="/" className="brand">
               <BrandMark />
               <span>
-                Python<b>mates</b>
+                Python<b>Mates</b>
               </span>
             </Link>
             <p>
@@ -38,7 +38,7 @@ export default function SiteFooter() {
             <h3>About</h3>
             <ul>
               <li>
-                <Link href="/about/">About Pythonmates</Link>
+                <Link href="/about/">About PythonMates</Link>
               </li>
               <li>
                 <a href={site.author.url}>{site.author.name}</a>
@@ -61,7 +61,7 @@ export default function SiteFooter() {
           <a href={site.aimates} rel="noopener">
             AIMates — learn and use AI at work
           </a>
-          <span>Pythonmates — learn Python</span>
+          <span>PythonMates — learn Python</span>
           <span>© {new Date().getFullYear()} {site.author.name}</span>
         </div>
       </div>

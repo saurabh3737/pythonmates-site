@@ -6,26 +6,26 @@ import { authorLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "About Pythonmates",
+  title: "About PythonMates",
   description:
-    "Pythonmates is a free, modern Python academy by Saurabh Jaiswal: tested lessons, runnable code, exercises and a path to Python for AI.",
+    "PythonMates is a free, modern Python academy by Saurabh Jaiswal: tested lessons, runnable code, exercises and a path to Python for AI.",
   alternates: { canonical: "/about/" },
 };
 
 export default function AboutPage() {
   return (
     <>
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "AboutPage", name: "About Pythonmates", mainEntity: authorLd }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "AboutPage", name: "About PythonMates", mainEntity: authorLd }} />
       <section className="page-head">
         <div className="wrap">
           <span className="eyebrow">About</span>
-          <h1>Why Pythonmates exists</h1>
+          <h1>Why PythonMates exists</h1>
           <p>Python is the base of modern AI. Learning it properly is still worth it — maybe more than ever.</p>
         </div>
       </section>
       <div className="wrap section prose">
         <p>
-          Pythonmates started as a set of Python tutorials. It&apos;s now a free, modern Python academy: short lessons with code you can run in your browser, exercises that check your
+          PythonMates started as a set of Python tutorials. It&apos;s now a free, modern Python academy: short lessons with code you can run in your browser, exercises that check your
           answer and quizzes that tell you when you&apos;re ready to move on.
         </p>
 
@@ -40,7 +40,7 @@ export default function AboutPage() {
         <h2>Learning Python in the age of AI</h2>
         <p>
           AI assistants can write a lot of code. To trust that code you need to read it, test it and know when it&apos;s
-          wrong. That&apos;s exactly what these lessons train. Pythonmate, an AI tutor that knows each lesson, is in
+          wrong. That&apos;s exactly what these lessons train. PythonMate, an AI tutor that knows each lesson, is in
           development.
         </p>
 
@@ -56,7 +56,7 @@ export default function AboutPage() {
 
         <h2>The mates family</h2>
         <p>
-          Pythonmates teaches Python. <a href={site.aimates}>AIMates</a> helps professionals use AI tools at work. Both
+          PythonMates teaches Python. <a href={site.aimates}>AIMates</a> helps professionals use AI tools at work. Both
           are free to use.
         </p>
 

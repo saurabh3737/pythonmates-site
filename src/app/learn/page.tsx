@@ -1,9 +1,12 @@
+import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import JsonLd from "@/components/JsonLd";
 import { pathIcons } from "@/components/pathIcons";
 import { publishedIn } from "@/content/lessons";
-import { paths } from "@/content/paths";
+import { pathName, paths } from "@/content/paths";
+import { breadcrumbLd, itemListLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Learn Python — free learning paths from beginner to AI",
@@ -15,6 +18,13 @@ export const metadata: Metadata = {
 export default function LearnPage() {
   return (
     <>
+      <JsonLd
+        data={itemListLd(
+          "Python learning paths",
+          paths.map((p) => ({ name: pathName(p), path: `/learn/${p.id}/` })),
+        )}
+      />
+      <JsonLd data={breadcrumbLd([{ name: "Learn", path: "/learn/" }])} />
       <section className="page-head">
         <div className="wrap">
           <span className="eyebrow">Learning paths</span>
@@ -26,17 +36,20 @@ export default function LearnPage() {
         </div>
       </section>
       <section className="wrap section">
-        <div className="cards">
+        <div className="cards paths-grid">
           {paths.map((p) => {
             const done = publishedIn(p.id).length;
             return (
-              <Link key={p.id} href={`/learn/${p.id}/`} className="card">
+              <Link key={p.id} href={`/learn/${p.id}/`} className={`card path-card path-${p.id}`}>
                 <span className="card-icon">{pathIcons[p.id]}</span>
                 <span className="tag">{p.level}</span>
                 <h3>{p.title}</h3>
                 <p>{p.summary}</p>
+                <span className="meter" aria-hidden="true">
+                  <span style={{ width: `${Math.round((done / p.outline.length) * 100)}%` }} />
+                </span>
                 <span className="card-meta">
-                  {p.outline.length} lessons{done ? ` · ${done} ready` : " · coming soon"} →
+                  {done} of {p.outline.length} lessons ready <ArrowRight size={14} />
                 </span>
               </Link>
             );
