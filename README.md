@@ -32,6 +32,17 @@ Open http://localhost:3000.
    output matches exactly.
 4. Import it in `src/content/lessons/index.ts`.
 
+## PythonMate (AI tutor)
+
+Every lesson has PythonMate: an "Explain" button on code blocks, "Explain this error"
+after a failed Run, "Ask PythonMate for a hint" on exercises, and a chat panel.
+It knows the lesson (never the exercise solution) and coaches instead of answering.
+
+- Server route: `src/app/api/pythonmate/route.ts` (Gemini, streamed, retry + fallback,
+  25 questions per 10 minutes per visitor). Prompt rules: `src/lib/tutorContext.ts`.
+- Set `GEMINI_API_KEY` in Vercel (and in `.env.local` for local testing — see
+  `.env.example`). Without a key the panel politely says it isn't switched on yet.
+
 ## Deploy
 
 `vercel.json` pins the Vercel settings to Next.js (framework, build command,

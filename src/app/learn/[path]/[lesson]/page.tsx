@@ -7,6 +7,8 @@ import ExerciseBox from "@/components/ExerciseBox";
 import JsonLd from "@/components/JsonLd";
 import LessonBody, { slugify } from "@/components/LessonBody";
 import LessonSidebar from "@/components/LessonSidebar";
+import OpenTutorButton from "@/components/OpenTutorButton";
+import PythonMate from "@/components/PythonMate";
 import Quiz from "@/components/Quiz";
 import RichText from "@/components/RichText";
 import { getLesson, lessonUrl, neighbours, publishedLessons } from "@/content/lessons";
@@ -125,7 +127,7 @@ export default async function LessonPage({ params }: { params: Params }) {
           </ol>
         </nav>
 
-        <LessonBody blocks={lesson.blocks} />
+        <LessonBody blocks={lesson.blocks} tutor />
 
         {lesson.field && (
           <aside className="note field">
@@ -136,21 +138,21 @@ export default async function LessonPage({ params }: { params: Params }) {
           </aside>
         )}
 
-        <ExerciseBox exercise={lesson.exercise} />
+        <ExerciseBox exercise={lesson.exercise} tutor />
         <Quiz questions={lesson.quiz} />
 
-        {/* Slot for the PythonMate AI tutor (phase 2). */}
         <div className="ai-slot">
-          <div className="card">
+          <OpenTutorButton className="card tutor-card">
             <span className="card-icon">
               <Bot size={22} />
             </span>
-            <h3>PythonMate — your AI tutor</h3>
-            <p>Coming soon: ask questions about this lesson, get your code explained and receive extra exercises.</p>
-            <span className="badge-soon" style={{ alignSelf: "flex-start" }}>
-              In development
+            <span className="card-title">Ask PythonMate</span>
+            <span className="card-text">
+              Your AI tutor knows this lesson. Ask a question, get code explained, or get a hint — never a ready-made
+              answer.
             </span>
-          </div>
+            <span className="card-meta">Open PythonMate →</span>
+          </OpenTutorButton>
           <a className="card" href={site.aimates} rel="noopener">
             <span className="card-icon">
               <Sparkles size={22} />
@@ -176,6 +178,7 @@ export default async function LessonPage({ params }: { params: Params }) {
           )}
         </nav>
       </article>
+      <PythonMate path={lesson.path} slug={lesson.slug} title={lesson.title} />
     </div>
   );
 }

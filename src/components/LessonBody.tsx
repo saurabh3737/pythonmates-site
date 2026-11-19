@@ -10,7 +10,7 @@ export function slugify(s: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
-export default function LessonBody({ blocks }: { blocks: Block[] }) {
+export default function LessonBody({ blocks, tutor = false }: { blocks: Block[]; tutor?: boolean }) {
   return (
     <>
       {blocks.map((b, i) => {
@@ -38,7 +38,7 @@ export default function LessonBody({ blocks }: { blocks: Block[] }) {
               </ul>
             );
           case "code":
-            return <CodeBlock key={i} code={b.code} output={b.output} file={b.file} run={b.run} />;
+            return <CodeBlock key={i} code={b.code} output={b.output} file={b.file} run={b.run} tutor={tutor && !!b.run} />;
           case "note":
             return (
               <aside key={i} className={`note ${b.tone}`}>

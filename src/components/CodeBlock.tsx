@@ -1,16 +1,18 @@
 "use client";
 
-import { Check, Copy, Pencil, Play, RotateCcw } from "lucide-react";
+import { Check, Copy, Pencil, Play, RotateCcw, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 import { highlightPython, escapeHtml } from "@/lib/highlight";
 import { preloadPython, runPython, type RunResult } from "@/lib/pyRunner";
+import { askTutor, tutorPrompts } from "@/lib/tutorBus";
 
 type Props = {
   code: string;
   output?: string;
   file?: string;
   run?: boolean;
+  tutor?: boolean; // show PythonMate buttons (lesson pages only)
 };
 
 export function handleTab(e: React.KeyboardEvent<HTMLTextAreaElement>, onRun?: () => void) {
@@ -28,7 +30,7 @@ export function handleTab(e: React.KeyboardEvent<HTMLTextAreaElement>, onRun?: (
   el.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
-export default function CodeBlock({ code, output, file, run }: Props) {
+export default function CodeBlock({ code, output, file, run, tutor }: Props) {
   const [value, setValue] = useState(code);
   const [editing, setEditing] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -71,6 +73,16 @@ export default function CodeBlock({ code, output, file, run }: Props) {
             <RotateCcw size={14} />
           </button>
         )}
+        {tutor && !isShell && (
+          <button
+            type="button"
+            className="btn btn-sm"
+            onClick={() => askTutor(tutorPrompts.explain(value))}
+            title="Ask PythonMate to explain this code"
+          >
+            <Sparkles size={14} /> Explain
+          </button>
+        )}
         <button type="button" className="btn btn-sm" onClick={onCopy} aria-label="Copy code">
           {copied ? <Check size={14} /> : <Copy size={14} />}
         </button>
@@ -103,6 +115,15 @@ export default function CodeBlock({ code, output, file, run }: Props) {
         <div className={outClass} aria-live="polite">
           <div className="out-label">
             <span>{result ? (result.ok ? "Your output" : "Error") : "Output"}</span>
+            {tutor && result && !result.ok && result.error && (
+              <button
+                type="button"
+                className="out-explain"
+                onClick={() => askTutor(tutorPrompts.error(value, result.error ?? ""))}
+              >
+                <Sparkles size={12} /> Explain this error
+              </button>
+            )}
           </div>
           <pre>{shownOutput || "(no output)"}</pre>
         </div>

@@ -1,12 +1,13 @@
 "use client";
 
-import { Dumbbell, Lightbulb, Play, RotateCcw } from "lucide-react";
+import { Dumbbell, Lightbulb, Play, RotateCcw, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 import { handleTab } from "@/components/CodeBlock";
 import RichText from "@/components/RichText";
 import type { Exercise } from "@/content/types";
 import { preloadPython, runPython } from "@/lib/pyRunner";
+import { askTutor, tutorPrompts } from "@/lib/tutorBus";
 
 function normalise(s: string): string {
   return s
@@ -17,7 +18,15 @@ function normalise(s: string): string {
     .trim();
 }
 
-export default function ExerciseBox({ exercise, title = "Practice" }: { exercise: Exercise; title?: string }) {
+export default function ExerciseBox({
+  exercise,
+  title = "Practice",
+  tutor = false,
+}: {
+  exercise: Exercise;
+  title?: string;
+  tutor?: boolean;
+}) {
   const [code, setCode] = useState(exercise.starter);
   const [busy, setBusy] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
@@ -93,6 +102,11 @@ export default function ExerciseBox({ exercise, title = "Practice" }: { exercise
         {hints < exercise.hints.length && (
           <button type="button" className="btn btn-sm" onClick={() => setHints(hints + 1)}>
             <Lightbulb size={14} /> {hints === 0 ? "Get a hint" : "Another hint"}
+          </button>
+        )}
+        {tutor && status === "fail" && (
+          <button type="button" className="btn btn-sm btn-tutor" onClick={() => askTutor(tutorPrompts.hint(code, output ?? ""))}>
+            <Sparkles size={14} /> Ask PythonMate for a hint
           </button>
         )}
         <button type="button" className="btn btn-sm" onClick={() => setShowSolution(!showSolution)}>
