@@ -48,6 +48,18 @@ export default function LessonBody({ blocks }: { blocks: Block[] }) {
                 </p>
               </aside>
             );
+          case "img":
+            return (
+              <figure key={i} className="figure">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={b.src} alt={b.alt} loading="lazy" />
+                {b.caption && (
+                  <figcaption>
+                    <RichText text={b.caption} />
+                  </figcaption>
+                )}
+              </figure>
+            );
           case "table":
             return (
               <div key={i} className="table-wrap">

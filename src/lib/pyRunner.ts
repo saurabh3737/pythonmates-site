@@ -5,13 +5,29 @@
 const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.29.4/full/";
 const LOAD_TIMEOUT_MS = 45_000;
 const RUN_TIMEOUT_MS = 10_000;
+const PACKAGE_RUN_TIMEOUT_MS = 60_000; // first import of a big package downloads it
 
 const WORKER_SOURCE = `
 importScripts("${PYODIDE}pyodide.js");
 let py = null;
+const FIGS = [
+  "import sys",
+  "_imgs = []",
+  "if 'matplotlib.pyplot' in sys.modules:",
+  "    import io, base64",
+  "    import matplotlib.pyplot as _plt",
+  "    for _n in _plt.get_fignums():",
+  "        _b = io.BytesIO()",
+  "        _plt.figure(_n).savefig(_b, format='png', dpi=110, bbox_inches='tight')",
+  "        _imgs.append(base64.b64encode(_b.getvalue()).decode())",
+  "    _plt.close('all')",
+  "_imgs",
+].join("\\n");
 const ready = loadPyodide({ indexURL: "${PYODIDE}" }).then((p) => {
   py = p;
   py.setStdin({ stdin: () => null });
+  // Charts render off-screen; we send them back as PNG images.
+  py.runPython("import os, warnings; os.environ['MPLBACKEND'] = 'AGG'; warnings.filterwarnings('ignore', message='.*non-interactive.*')");
   postMessage({ type: "ready" });
 });
 onmessage = async (e) => {
@@ -22,8 +38,16 @@ onmessage = async (e) => {
   py.setStderr({ batched: (s) => { out += s + "\\n"; } });
   const ns = py.globals.get("dict")();
   try {
+    // Loads packages the code imports (numpy, pandas, pytest...) from the Pyodide CDN.
+    await py.loadPackagesFromImports(code);
     await py.runPythonAsync(code, { globals: ns });
-    postMessage({ type: "result", id, ok: true, out });
+    let images = [];
+    if (code.includes("matplotlib")) {
+      const figs = await py.runPythonAsync(FIGS, { globals: ns });
+      images = figs.toJs();
+      figs.destroy();
+    }
+    postMessage({ type: "result", id, ok: true, out, images });
   } catch (err) {
     postMessage({ type: "result", id, ok: false, out, error: String((err && err.message) || err) });
   } finally {
@@ -32,7 +56,7 @@ onmessage = async (e) => {
 };
 `;
 
-export type RunResult = { ok: boolean; out: string; error?: string };
+export type RunResult = { ok: boolean; out: string; error?: string; images?: string[] };
 
 type Pending = { resolve: (r: RunResult) => void; timer: ReturnType<typeof setTimeout> };
 
@@ -67,7 +91,12 @@ function start(): Promise<void> {
         if (!p) return;
         clearTimeout(p.timer);
         pending.delete(msg.id);
-        p.resolve({ ok: msg.ok, out: msg.out, error: msg.error ? trimTraceback(msg.error) : undefined });
+        p.resolve({
+          ok: msg.ok,
+          out: msg.out,
+          error: msg.error ? trimTraceback(msg.error) : undefined,
+          images: msg.images,
+        });
       }
     };
     w.onerror = () => {
@@ -93,6 +122,9 @@ export async function runPython(code: string): Promise<RunResult> {
   const w = worker;
   if (!w) return { ok: false, out: "", error: "Python isn't available. Try again." };
   const id = nextId++;
+  const limit = /^\s*(import|from)\s+(numpy|pandas|matplotlib|sklearn|scipy|pytest|pydantic)\b/m.test(code)
+    ? PACKAGE_RUN_TIMEOUT_MS
+    : RUN_TIMEOUT_MS;
   return new Promise<RunResult>((resolve) => {
     const timer = setTimeout(() => {
       pending.delete(id);
@@ -106,9 +138,9 @@ export async function runPython(code: string): Promise<RunResult> {
       resolve({
         ok: false,
         out: "",
-        error: `Stopped after ${RUN_TIMEOUT_MS / 1000} seconds. Is there a loop that never ends?`,
+        error: `Stopped after ${limit / 1000} seconds. Is there a loop that never ends?`,
       });
-    }, RUN_TIMEOUT_MS);
+    }, limit);
     pending.set(id, { resolve, timer });
     w.postMessage({ id, code });
   });

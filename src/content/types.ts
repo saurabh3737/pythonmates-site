@@ -8,7 +8,8 @@ export type Block =
   | { t: "list"; items: string[] }
   | { t: "code"; code: string; output?: string; file?: string; run?: boolean }
   | { t: "note"; tone: "tip" | "warn"; title: string; text: string }
-  | { t: "table"; head: string[]; rows: string[][] };
+  | { t: "table"; head: string[]; rows: string[][] }
+  | { t: "img"; src: string; alt: string; caption?: string };
 
 export type Exercise = {
   prompt: string;

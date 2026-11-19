@@ -23,7 +23,6 @@ const demoOutput = `Hello, you! Let's learn Python.
 
 export default function Home() {
   const lessonCount = publishedLessons().length;
-  const planned = paths.reduce((n, p) => n + p.outline.length, 0);
 
   return (
     <>
@@ -56,7 +55,7 @@ export default function Home() {
                 <CheckCircle2 size={16} /> Nothing to install
               </span>
               <span>
-                <CheckCircle2 size={16} /> {planned} lessons planned
+                <CheckCircle2 size={16} /> {lessonCount} free lessons
               </span>
             </div>
           </div>
@@ -150,7 +149,7 @@ export default function Home() {
             <h3>Written by {site.author.name}</h3>
             <p>
               {site.author.role}. Python developer for over 15 years in research, banking and tech. {lessonCount}{" "}
-              lessons live now, with new ones added every week.{" "}
+              free lessons from your first line of code to Python for AI.{" "}
               <Link href="/about/">About Pythonmates →</Link>
             </p>
           </div>

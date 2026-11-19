@@ -330,6 +330,11 @@ tr:last-child td { border-bottom: 0; }
 .out.error pre { color: var(--out-error); }
 .out.ok .out-label { color: var(--green); }
 
+.plot { display: block; max-width: 100%; margin: 0; padding: 12px 18px 16px; background: #ffffff; border-top: 1px dashed var(--code-line); }
+.figure { margin: 22px 0; }
+.figure img { max-width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #ffffff; }
+.figure figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
 /* Exercise */
 .exercise { margin-top: 56px; padding: 24px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); scroll-margin-top: 84px; }
 .exercise h2 { margin-top: 0 !important; display: flex; align-items: center; gap: 10px; }

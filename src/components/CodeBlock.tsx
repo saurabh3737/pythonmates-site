@@ -107,6 +107,10 @@ export default function CodeBlock({ code, output, file, run }: Props) {
           <pre>{shownOutput || "(no output)"}</pre>
         </div>
       )}
+      {result?.images?.map((img, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img key={i} className="plot" src={`data:image/png;base64,${img}`} alt="Chart produced by your code" />
+      ))}
       {run && output === undefined && !result && busy && (
         <div className="out">
           <pre>Starting Python…</pre>
