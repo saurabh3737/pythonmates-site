@@ -236,6 +236,11 @@ export default function Home() {
               <li>PythonMate, an AI tutor for every lesson, is in development.</li>
               <li>The Python for AI path covers NumPy, pandas, LLM APIs, RAG and FastAPI.</li>
             </ul>
+            <p style={{ marginTop: 16 }}>
+              <Link href="/guides/learn-python-with-ai/" className="btn btn-sm">
+                Read the guide: how to learn Python with AI <ArrowRight size={14} />
+              </Link>
+            </p>
           </div>
           <div className="card">
             <span className="card-icon">

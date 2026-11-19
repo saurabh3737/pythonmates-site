@@ -1,4 +1,5 @@
 import { plain } from "@/components/RichText";
+import { cheatsheets } from "@/content/cheatsheets";
 import { getLesson, lessonUrl } from "@/content/lessons";
 import { paths } from "@/content/paths";
 import { site } from "@/lib/site";
@@ -27,6 +28,8 @@ export function GET() {
   lines.push(
     "## Optional",
     "",
+    `- [How to learn Python with AI](${site.url}/guides/learn-python-with-ai/): prompts that teach instead of solve, checking AI code, a 6-week plan`,
+    ...cheatsheets.map((c) => `- [${c.title}](${site.url}/cheat-sheets/${c.slug}/): ${c.description}`),
     `- [Full course text](${site.url}/llms-full.txt): every lesson in one plain-text file`,
     `- [Practice exercises](${site.url}/practice/): all exercises with automatic checking`,
     `- [About](${site.url}/about/)`,

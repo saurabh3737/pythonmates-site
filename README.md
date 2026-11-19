@@ -34,8 +34,10 @@ Open http://localhost:3000.
 
 ## Deploy
 
-Vercel project settings → Build and Deployment:
-Framework Preset **Next.js**, no overrides for build command or output directory.
+`vercel.json` pins the Vercel settings to Next.js (framework, build command,
+output directory `.next`), so the dashboard's old static-site settings can't break it.
+
+Before pushing: `npm run lint` and `npm run build`.
 
 Old URLs: saurabhjaiswal.com/pythonmates/x.html → pythonmates.com/x.html →
 new lesson URL (both 301).

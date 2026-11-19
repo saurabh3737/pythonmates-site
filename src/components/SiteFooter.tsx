@@ -32,6 +32,12 @@ export default function SiteFooter() {
               <li>
                 <Link href="/practice/">Practice</Link>
               </li>
+              <li>
+                <Link href="/cheat-sheets/">Cheat sheets</Link>
+              </li>
+              <li>
+                <Link href="/guides/learn-python-with-ai/">Learn Python with AI</Link>
+              </li>
             </ul>
           </div>
           <div>

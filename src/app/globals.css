@@ -176,6 +176,7 @@ html[data-theme="light"] .theme-toggle .i-moon { display: block; }
 .footer-grid p { font-size: 15px; color: var(--muted); margin: 10px 0 0; max-width: 380px; }
 .family { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--muted); }
 .family strong { color: var(--text); }
+@media (max-width: 760px) { .site-nav a[href="/cheat-sheets/"] { display: none; } }
 @media (max-width: 420px) { .site-nav a[href="/about/"] { display: none; } }
 @media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr; } }
 
@@ -475,3 +476,35 @@ a.path-card:hover { box-shadow: 0 18px 40px -22px var(--path-shadow); }
 .toc li { margin: 0 0 6px; break-inside: avoid; }
 @media (max-width: 640px) { .toc ol { columns: 1; } }
 .lesson-meta a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+
+/* Cheat sheets */
+.sheet { columns: 2; column-gap: 28px; }
+.sheet-section { break-inside: avoid; margin: 0 0 22px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.sheet-section h2 { margin: 0 0 10px; font-size: 18px; color: var(--label); }
+.sheet-section dl { margin: 0; display: grid; gap: 8px; }
+.sheet-section dl > div { display: grid; gap: 2px; }
+.sheet-section dt code { display: block; white-space: pre-wrap; font-size: 13px; line-height: 1.5; background: var(--code-bg); color: var(--code-text); border: 1px solid var(--code-line); border-radius: 8px; padding: 6px 9px; }
+.sheet-section dd { margin: 0 0 0 2px; font-size: 13.5px; color: var(--muted); }
+.sheet-foot { font-size: 13px; color: var(--muted); text-align: center; margin-top: 8px; }
+@media (max-width: 860px) { .sheet { columns: 1; } }
+
+@media print {
+  html[data-theme] { color-scheme: light; }
+  html, body { background: #fff !important; color: #000 !important; }
+  body { font-size: 11px; }
+  .site-header, .site-footer, .no-print, .skip { display: none !important; }
+  .page-head { padding: 0 0 8px !important; border: 0 !important; background: none !important; }
+  .page-head h1 { font-size: 22px !important; margin: 0 0 4px !important; color: #000 !important; }
+  .page-head p { font-size: 11px !important; color: #333 !important; }
+  .wrap { width: 100% !important; }
+  .section { padding-top: 6px !important; }
+  .sheet { columns: 3; column-gap: 10px; }
+  .sheet-section { padding: 7px 8px; margin-bottom: 8px; border-color: #ccc; background: #fff; }
+  .sheet-section h2 { font-size: 12.5px; margin-bottom: 5px; color: #1a4f8a; }
+  .sheet-section dl { gap: 4px; }
+  .sheet-section dt code { font-size: 9.5px; padding: 3px 6px; background: #f3f6fa !important; color: #000 !important; border-color: #ddd; }
+  .sheet-section dd { font-size: 9.5px; color: #333; }
+  .tk-kw, .tk-str, .tk-num, .tk-com, .tk-bi { color: #000 !important; }
+  :not(pre) > code { background: #f3f6fa !important; color: #000 !important; border-color: #ddd !important; }
+  @page { size: A4; margin: 10mm; }
+}

@@ -1,4 +1,5 @@
 import { plain } from "@/components/RichText";
+import { cheatsheets } from "@/content/cheatsheets";
 import { getLesson, lessonUrl } from "@/content/lessons";
 import { paths } from "@/content/paths";
 import type { Lesson } from "@/content/types";
@@ -38,6 +39,13 @@ export function GET() {
     if (!live.length) continue;
     parts.push(`## ${p.title} path`, "", p.summary, "");
     for (const l of live) parts.push(lessonText(l));
+  }
+  parts.push("## Cheat sheets", "");
+  for (const c of cheatsheets) {
+    parts.push(`### ${c.title}`, "", `URL: ${site.url}/cheat-sheets/${c.slug}/`, "", plain(c.answer), "");
+    for (const sec of c.sections) {
+      parts.push(`#### ${sec.title}`, "", ...sec.items.map((i) => `- \`${i.code.replace(/\n/g, " ⏎ ")}\` — ${i.note}`), "");
+    }
   }
   return new Response(parts.join("\n"), { headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }
